@@ -4,6 +4,7 @@ import { RigidBody, CuboidCollider, CylinderCollider } from '@react-three/rapier
 import { MeshReflectorMaterial } from '@react-three/drei';
 import { WALLS, FLOOR, ROOM_ZONES, HALL_HEIGHT } from '../../config/museum';
 import { makeTextTexture } from './textTexture';
+import { useQualityStore } from '../../store/useQualityStore';
 
 // Materiais compartilhados (evitam recriação a cada render)
 const wallMat = new THREE.MeshStandardMaterial({ color: '#131a29', roughness: 0.52, metalness: 0.38 });
@@ -49,6 +50,7 @@ function Walls() {
 
 function Floors() {
   const zones = ROOM_ZONES.filter((z) => z.id !== 'hall');
+  const q = useQualityStore((s) => s.settings);
   return (
     <group>
       {/* Colisor do chão (laje única) */}
@@ -59,22 +61,26 @@ function Floors() {
         />
       </RigidBody>
 
-      {/* Hall — piso espelhado */}
+      {/* Hall — piso espelhado (apenas em qualidade medium+) */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.001, 0]} receiveShadow>
         <planeGeometry args={[40, 20]} />
-        <MeshReflectorMaterial
-          blur={[280, 60]}
-          resolution={1024}
-          mixBlur={1}
-          mixStrength={9}
-          roughness={0.85}
-          depthScale={1.1}
-          minDepthThreshold={0.4}
-          maxDepthThreshold={1.4}
-          color="#0a0f18"
-          metalness={0.55}
-          mirror={0.5}
-        />
+        {q.reflectorFloor ? (
+          <MeshReflectorMaterial
+            blur={[280, 60]}
+            resolution={q.reflectorResolution}
+            mixBlur={1}
+            mixStrength={9}
+            roughness={0.85}
+            depthScale={1.1}
+            minDepthThreshold={0.4}
+            maxDepthThreshold={1.4}
+            color="#0a0f18"
+            metalness={0.55}
+            mirror={0.5}
+          />
+        ) : (
+          <meshStandardMaterial color="#0a0f18" roughness={0.25} metalness={0.7} />
+        )}
       </mesh>
 
       {/* Demais pisos (por zona, sem sobrepor o hall) */}

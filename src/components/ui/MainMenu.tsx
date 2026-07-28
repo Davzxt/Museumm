@@ -2,11 +2,13 @@ import { motion } from 'framer-motion';
 import { useMuseumStore } from '../../store/useMuseumStore';
 import { startAudio, setMuted, sfx } from '../../audio/audioEngine';
 import { relockPointer } from './pointerLock';
+import { useVRButton } from '../three/VRSetup';
 
 export function MainMenu() {
   const setPhase = useMuseumStore((s) => s.setPhase);
   const setHelpOpen = useMuseumStore((s) => s.setHelpOpen);
   const muted = useMuseumStore((s) => s.muted);
+  const vr = useVRButton();
 
   const enter = () => {
     sfx.click();
@@ -59,6 +61,11 @@ export function MainMenu() {
         <button className="btn btn-primary" onClick={enter} onMouseEnter={() => sfx.hover()}>
           Iniciar visita
         </button>
+        {vr.supported && (
+          <button className="btn btn-vr" onClick={() => { sfx.click(); startAudio(); setPhase('playing'); vr.enterVR(); }} onMouseEnter={() => sfx.hover()}>
+            🥽 Entrar em VR
+          </button>
+        )}
         <button className="btn" onClick={() => { sfx.click(); setHelpOpen(true); }} onMouseEnter={() => sfx.hover()}>
           Como explorar
         </button>

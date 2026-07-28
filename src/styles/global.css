@@ -651,3 +651,160 @@ button {
   .modal-header { padding: 20px 22px 10px; }
   .modal-body { padding: 8px 22px 24px; }
 }
+
+/* ── Touch Controls ──────────────────────────────────────────── */
+.touch-controls {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+}
+
+.touch-joystick {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(139, 233, 253, 0.08);
+  border: 2px solid rgba(139, 233, 253, 0.25);
+  pointer-events: auto;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.touch-knob {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(139, 233, 253, 0.35);
+  border: 2px solid rgba(139, 233, 253, 0.6);
+  transition: transform 0.05s;
+}
+
+.touch-buttons {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.touch-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(139, 233, 253, 0.4);
+  background: rgba(11, 16, 28, 0.7);
+  color: #8be9fd;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.touch-btn-jump { border-color: rgba(139, 233, 253, 0.5); }
+.touch-btn-interact { border-color: rgba(179, 136, 255, 0.5); color: #b388ff; }
+.touch-btn-run { border-color: rgba(251, 113, 133, 0.5); color: #fb7185; }
+
+.touch-btn:active {
+  background: rgba(139, 233, 253, 0.2);
+  transform: scale(0.92);
+}
+
+/* ── Quality Selector ────────────────────────────────────────── */
+.quality-selector {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 80;
+  pointer-events: auto;
+}
+
+.quality-toggle {
+  background: rgba(11, 16, 28, 0.75);
+  border: 1px solid rgba(139, 233, 253, 0.2);
+  color: var(--text-dim);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s;
+}
+
+.quality-toggle:hover {
+  border-color: rgba(139, 233, 253, 0.5);
+  color: var(--text);
+}
+
+.quality-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  background: rgba(8, 12, 22, 0.92);
+  border: 1px solid rgba(139, 233, 253, 0.15);
+  border-radius: 12px;
+  padding: 12px;
+  min-width: 200px;
+  backdrop-filter: blur(16px);
+}
+
+.quality-menu-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
+.quality-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.quality-option:hover {
+  background: rgba(139, 233, 253, 0.06);
+  border-color: rgba(139, 233, 253, 0.15);
+}
+
+.quality-option.active {
+  background: rgba(139, 233, 253, 0.1);
+  border-color: rgba(139, 233, 253, 0.35);
+}
+
+.quality-icon { font-size: 16px; }
+.quality-label { font-weight: 600; }
+.quality-desc { font-size: 11px; color: var(--text-dim); margin-left: auto; }
+
+/* ── VR Button ───────────────────────────────────────────────── */
+.btn-vr {
+  background: linear-gradient(135deg, rgba(139, 233, 253, 0.15), rgba(179, 136, 255, 0.15)) !important;
+  border-color: rgba(139, 233, 253, 0.4) !important;
+}
+
+.btn-vr:hover {
+  background: linear-gradient(135deg, rgba(139, 233, 253, 0.25), rgba(179, 136, 255, 0.25)) !important;
+  border-color: rgba(139, 233, 253, 0.6) !important;
+}

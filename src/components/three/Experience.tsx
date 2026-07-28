@@ -8,18 +8,21 @@ import { Hall } from './Hall';
 import { Rooms } from './Rooms';
 import { Player } from './Player';
 import { Particles } from './Particles';
+import { VRSetup } from './VRSetup';
 import { useMuseumStore } from '../../store/useMuseumStore';
+import { useQualityStore } from '../../store/useQualityStore';
 
 export function Experience() {
   const phase = useMuseumStore((s) => s.phase);
+  const q = useQualityStore((s) => s.settings);
 
   return (
     <>
-      <fog attach="fog" args={['#05070d', 34, 110]} />
+      <fog attach="fog" args={['#05070d', q.fogNear, q.fogFar]} />
       <Lighting />
 
       {/* Ambiente procedural (offline) para reflexos PBR */}
-      <Environment resolution={256} frames={1}>
+      <Environment resolution={q.envResolution} frames={q.envFrames}>
         <color attach="background" args={['#0a0f1a']} />
         <Lightformer intensity={2.4} position={[0, 6, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[14, 14, 1]} color="#9fdcff" />
         <Lightformer intensity={1.1} position={[-8, 3, -6]} rotation={[0, Math.PI / 3, 0]} scale={[8, 3, 1]} color="#b388ff" />
@@ -37,6 +40,7 @@ export function Experience() {
 
       <Particles />
       <Effects />
+      <VRSetup />
     </>
   );
 }

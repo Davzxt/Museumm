@@ -106,8 +106,16 @@ export function Player() {
     let mz = 0;
 
     if (canMove) {
-      const fwd = (keys.current.KeyW ? 1 : 0) - (keys.current.KeyS ? 1 : 0);
-      const side = (keys.current.KeyD ? 1 : 0) - (keys.current.KeyA ? 1 : 0);
+      let fwd = (keys.current.KeyW ? 1 : 0) - (keys.current.KeyS ? 1 : 0);
+      let side = (keys.current.KeyD ? 1 : 0) - (keys.current.KeyA ? 1 : 0);
+
+      // Touch joystick input
+      const tm = (window as any).__touchMove;
+      if (tm) {
+        side += tm.x || 0;
+        fwd += -(tm.y || 0);
+      }
+
       const fx = -sinY;
       const fz = -cosY;
       const rx = cosY;
@@ -116,8 +124,9 @@ export function Player() {
       mz = fz * fwd + rz * side;
       const len = Math.hypot(mx, mz) || 1;
       const speed = keys.current.ShiftLeft || keys.current.ShiftRight ? RUN : WALK;
-      mx = (mx / len) * speed * (fwd || side ? 1 : 0);
-      mz = (mz / len) * speed * (fwd || side ? 1 : 0);
+      const moving = fwd !== 0 || side !== 0;
+      mx = (mx / len) * speed * (moving ? 1 : 0);
+      mz = (mz / len) * speed * (moving ? 1 : 0);
 
       // Pulo (com checagem de chão)
       if (keys.current.Space) {

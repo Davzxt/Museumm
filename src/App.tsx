@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Experience } from './components/three/Experience';
 import { LoadingScreen } from './components/ui/LoadingScreen';
@@ -10,18 +10,28 @@ import { MapOverlay } from './components/ui/MapOverlay';
 import { HelpOverlay } from './components/ui/HelpOverlay';
 import { PauseOverlay } from './components/ui/PauseOverlay';
 import { KeyboardController } from './components/ui/KeyboardController';
+import { TouchControls } from './components/ui/TouchControls';
+import { QualitySelector } from './components/ui/QualitySelector';
 import { useMuseumStore } from './store/useMuseumStore';
+import { useQualityStore } from './store/useQualityStore';
 
 export default function App() {
   const phase = useMuseumStore((s) => s.phase);
+  const q = useQualityStore((s) => s.settings);
+
+  const glOpts = useMemo(() => ({
+    antialias: false,
+    powerPreference: 'high-performance' as const,
+    ...(q.preset === 'low' ? { precision: 'lowp' as const } : {}),
+  }), [q.preset]);
 
   return (
     <>
       <Canvas
-        shadows
-        dpr={[1, 1.75]}
+        shadows={q.shadows}
+        dpr={q.dpr}
         camera={{ fov: 72, near: 0.1, far: 160, position: [26, 1.7, 0] }}
-        gl={{ antialias: false, powerPreference: 'high-performance' }}
+        gl={glOpts}
         onCreated={({ gl }) => gl.setClearColor('#05070d')}
       >
         <Suspense fallback={null}>
@@ -38,10 +48,12 @@ export default function App() {
           <SpeakerModal />
           <MapOverlay />
           <PauseOverlay />
+          {q.touchControls && <TouchControls />}
         </>
       )}
       <HelpOverlay />
       <KeyboardController />
+      <QualitySelector />
     </>
   );
 }
